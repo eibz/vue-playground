@@ -1,8 +1,9 @@
 import * as Vue from 'vue/dist/vue.esm-bundler.js';
 
 const Hello = {
+  props: ['greeting'],
 	template: `
-		<p>Hello!</p>
+		<p>{{ greeting }}!</p>
 	`
 }
 const app = Vue.createApp({
@@ -10,11 +11,8 @@ const app = Vue.createApp({
       Hello,
     },
     template: `
-    <hello />
-    <hello />
-    <hello />
-    <hello />
-    <hello />
+      <hello greeting="Hello"/>
+      <hello greeting="Hi"/>
       <button v-on:click="increment">Increment</button>
       <p>{{count}}</p>
 
