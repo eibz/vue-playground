@@ -4,6 +4,11 @@ const app = Vue.createApp({
     template: `
       <button v-on:click="increment">Increment</button>
       <p>{{count}}</p>
+      <div v-for="number in evenList">
+        <div>
+         {{ number }} 
+        </div>
+      </div>
       <div v-if="isEven()">
         Even
       </div>
@@ -14,7 +19,14 @@ const app = Vue.createApp({
 
     data() {
       return {
-        count: 0
+        count: 0,
+        numbers: [1,2,3,4,5,6,7,8,9,10],
+      }
+    },
+
+    computed: {
+      evenList() {
+        return this.numbers.filter(num => this.isEven(num))
       }
     },
 
@@ -22,8 +34,8 @@ const app = Vue.createApp({
       increment() {
         this.count += 1;
       },
-      isEven() {
-        return this.count % 2 === 0;
+      isEven(number) {
+        return number % 2 === 0;
       }
     }
 });
