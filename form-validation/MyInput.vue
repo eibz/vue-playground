@@ -1,7 +1,7 @@
 <template>
     <div class="label">
         <label :for="name">{{ name }}</label>
-        <div class="error">{{ error}}</div>
+        <div class="error">{{ error }}</div>
     </div>
     <input 
       :id="name" 
@@ -27,6 +27,17 @@ export default {
           type: Object,
           default: {},
         },
+        error:{
+            type: String,
+        },
+    },
+
+    created() {
+      this.$emit('update', {
+        name: this.name.toLowerCase(),
+        value: this.value,
+        error: this.validate(this.value),
+      });
     },
 
     methods: {
@@ -34,7 +45,18 @@ export default {
         this.$emit('update', {
           name: this.name.toLowerCase(),
           value: $event.target.value,
+          error: this.validate($event.target.value),
         });
+      },
+
+      validate(value) {
+        if (this.rules.required && this.value.length === 0) {
+          return 'Value is required';
+        }
+
+        if (this.rules.min && value.length < this.rules.min) {
+          return `The min length is ${this.rules.min}.`;
+        }
       }
     },
 
