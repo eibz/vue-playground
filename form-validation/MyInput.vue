@@ -7,12 +7,18 @@
       :id="name" 
       :value="value"
       @input="input"
+      :type="type"
     />
 </template>
 
 <script>
 export default {
+    emits: ['update'],
     props: {
+        type:{
+            type: String,
+            default: 'text',
+        },
         name:{
             type: String,
             required: true,
