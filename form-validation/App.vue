@@ -1,7 +1,15 @@
 <template>
     <my-input 
         name="Username"
-        :rules="{ required: true, min: 5 }"    
+        :rules="{ required: true, min: 5 }"
+        :value="username.value"
+        @update="update"
+    />
+    <my-input 
+        name="Password"
+        :rules="{ required: true, min: 10 }"
+        :value="password.value"
+        @update="update"
     />
     <my-button
         background="darkslateblue"
@@ -19,11 +27,26 @@ export default {
         MyButton,
         MyInput
     },
+
     data() {
         return {
             valid: false,
+            username: {
+                value: 'user',
+                valid: false,
+            },
+            password: {
+                value: 'pass',
+                valid: false,
+            },
         }
-    }
+    },
+
+    methods: {
+        update({ name, value }) {
+            this[name].value = value;
+        }
+    },
 }
 </script>
 
