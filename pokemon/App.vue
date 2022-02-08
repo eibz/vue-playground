@@ -1,52 +1,47 @@
 <template>
-  <div class="cards">
-    <card
-      v-for="pokemon in pokemons"
-      :key="pokemon.id"
-    >
-      <template v-slot:title>
-        {{ pokemon.name }}
-      </template>
+  <pokemon-cards 
+    :pokemons="pokemons"
+    @chosen="fetchEvolutions"
+    :selectedID="selectedID"
+  />
 
-      <template v-slot:content>
-        <img :src="pokemon.sprite">
-      </template>
-
-      <template v-slot:description>
-        <div 
-          v-for="type in pokemon.types" 
-          :key="type"
-        >
-          {{ type }}
-        </div>
-      </template>
-    </card>
-  </div>
+  <pokemon-cards 
+    :pokemons="evolutions"
+  />
 </template>
 
 <script>
-import Card from './Card.vue';
+import PokemonCards from './PokemonCards.vue';
 
 const api = 'https://pokeapi.co/api/v2/pokemon';
-const ids = [1, 4, 7]
+const IDS = [1, 4, 7]
 export default {
     components: {
-      Card
+      PokemonCards,
     },
 
     data() {
       return {
         pokemons: [],
+        evolutions: [],
+        selectedID: null,
       }
     },
 
     // fetches the API data on page load
-    created() {
-      this.fetchData();
+    async created() {
+      this.pokemons = await this.fetchData(IDS);
     },
 
     methods: {
-        async fetchData() {
+        async fetchEvolutions(pokemon) {
+          this.evolutions = await this.fetchData(
+            [pokemon.id + 1, pokemon.id + 2]
+          )
+          this.selectedID = pokemon.id;
+        },
+
+        async fetchData(ids) {
             const responses = await Promise.all(
               ids.map( id => window.fetch(`${api}/${id}`) )
             );
@@ -55,7 +50,7 @@ export default {
               responses.map( data => data.json() )
             );
 
-            this.pokemons = json.map(datum => ({
+            return json.map(datum => ({
               id: datum.id,
               name: datum.name,
               sprite: datum.sprites.other['official-artwork'].front_default,
@@ -67,10 +62,5 @@ export default {
 </script>
 
 <style scoped>
-.cards {
-  display: flex;
-}
-img {
-  width: 100%;
-}
+
 </style>

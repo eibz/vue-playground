@@ -45,9 +45,6 @@ export default {
   transition: 0.2s;
   box-shadow: 0px 1px 9px darkgrey;
 }
-.opace {
-  opacity: 0.5;
-}
 .card:hover {
   opacity: 1;
 }
