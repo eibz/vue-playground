@@ -1,43 +1,65 @@
 <template>
-    <div class="card">
+  <div class="cards">
+    <div 
+      class="card"
+      v-for="p in pokemon"
+      :key="p.id"
+    >
         <div class="title">
-            Title
+            {{ p.name }}
         </div>
 
         <div class="content">
-            Content
+            <img :src="p.sprite">
         </div>
 
         <div class="description">
-            Description
+            <div v-for="type in p.types" :key="type">{{ type }}</div>
         </div>
-        <button @click="fetchData">Fetch</button>
     </div>
+  </div>
 </template>
 
 <script>
 const api = 'https://pokeapi.co/api/v2/pokemon';
+const ids = [1, 4, 7]
 export default {
     data() {
-
+      return {
+        pokemon: [],
+      }
     },
+
+    // fetches the API data on page load
+    created() {
+      this.fetchData();
+    },
+
     methods: {
         async fetchData() {
-            const response = await window.fetch(`${api}/1`);
-            const json = await response.json();
-            this.pokemon = {
-                id: json.id,
-                name: json.name,
-                sprite: json.sprites.other['official-artwork'].front_default,
-                types: json.types.map( type => type.type.name ),
-            }
-            console.log(this.pokemon);
+            const responses = await Promise.all(
+              ids.map( id => window.fetch(`${api}/${id}`) )
+            );
+
+            const json = await Promise.all(
+              responses.map( data => data.json() )
+            );
+
+            this.pokemon = json.map(datum => ({
+              id: datum.id,
+              name: datum.name,
+              sprite: datum.sprites.other['official-artwork'].front_default,
+              types: datum.types.map( type => type.type.name ),
+            }));
         },
     },
 }
 </script>
 
 <style scoped>
+.cards {
+  display: flex;
+}
 .card {
   border: 1px solid silver;
   border-radius: 8px;
