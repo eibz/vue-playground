@@ -1,4 +1,8 @@
 <template>
+    <input 
+        @input="setHashtag"
+        :value="currentTag" 
+    />
     <card
         v-for="post in filteredPosts"
         :key="post.id"
@@ -17,7 +21,6 @@
         />
       </template>
     </card>
-    {{ currentTag }}
 </template>
 
 <script>
@@ -33,6 +36,10 @@ export default {
         Controls,
     },
     setup() {
+        const setHashtag = ($event) => {
+            store.setHashtag($event.target.value);
+        }
+
         const filteredPosts = computed(() => {
             if (!store.state.currentTag) {
                 return store.state.posts;
@@ -44,7 +51,9 @@ export default {
         })
 
         return {
+            setHashtag,
             filteredPosts,
+            currentTag: computed(() => store.state.currentTag),
         }
     }
 }
