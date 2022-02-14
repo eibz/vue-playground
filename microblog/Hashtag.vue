@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { store } from './store';
 export default {
     props: {
         hashtag: {
@@ -18,7 +19,7 @@ export default {
     // ctx allows for $emit in composition API
     setup(props, ctx) {
         const setHashtag = () => {
-            ctx.emit('setHashtag', props.hashtag);
+            store.setHashtag(props.hashtag);
         };
 
         return {
