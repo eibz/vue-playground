@@ -28,12 +28,6 @@ export default {
             store.dispatch('fetchPosts');
         }
 
-        const currentPost = computed(() => {
-            return store.state.posts.find( x => {
-                return x.id === store.state.postId;
-            })
-        })
-
         onMounted(() => {
             fetchData();
         })
@@ -41,7 +35,7 @@ export default {
         return {
             posts: computed(() => store.state.posts),
             postId: computed(() => store.state.postId),
-            currentPost,
+            currentPost: computed(() => store.getters.currentPost),
             click,
         }
     }
