@@ -11,23 +11,26 @@
 
 <script>
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 export default {
     setup() {
-        const posts = [
-            { id: 1, title: 'Post #1' },
-            { id: 2, title: 'Post #2' }
-        ]
-
         const store = useStore();
 
         const click = (post) => {
             store.commit('setPostId', post.id)
         }
 
+        const fetchData = () => {
+            store.dispatch('fetchPosts');
+        }
+
+        onMounted(() => {
+            fetchData();
+        })
+
         return {
-            posts,
+            posts: computed(() => store.state.posts),
             postId: computed(() => store.state.postId),
             click,
         }
