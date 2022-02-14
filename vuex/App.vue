@@ -1,22 +1,34 @@
 <template>
-    {{ store.state.count }}
-    <button @click="click">Increment</button>
+    <button
+        v-for="post in posts"
+        :key="post.id"
+        @click="click(post)"
+    >
+        {{ post.title }}
+    </button>
+    {{ postId }}
 </template>
 
 <script>
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
     setup() {
-        const store = useStore();
-        console.log(store);
+        const posts = [
+            { id: 1, title: 'Post #1' },
+            { id: 2, title: 'Post #2' }
+        ]
 
-        const click = () => {
-            store.commit('increment', 10)
+        const store = useStore();
+
+        const click = (post) => {
+            store.commit('setPostId', post.id)
         }
 
         return {
-            store,
+            posts,
+            postId: computed(() => store.state.postId),
             click,
         }
     }

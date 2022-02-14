@@ -3,13 +3,13 @@ import { createStore } from 'vuex';
 export const store = createStore({
     state() {
         return {
-            count: 0
+            postId: null,
         }
     },
 
     mutations: {
-        increment(state, payload) {
-            state.count += payload;
+        setPostId(state, postId) {
+            state.postId = postId;
         } 
     }
 })
