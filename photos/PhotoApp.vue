@@ -1,7 +1,7 @@
 <template>
     <layout>
         <template v-slot:header>
-
+            Header
         </template>
         <template v-slot:sidebar>
             <album
