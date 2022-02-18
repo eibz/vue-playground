@@ -7,9 +7,9 @@
             <div class="sidebar">
                 <slot name="sidebar" />
             </div>
-        </div>
-        <div class="content">
-            <slot name="content" />
+            <div class="content">
+                <slot name="content" />
+            </div>
         </div>
     </div>
 </template>
